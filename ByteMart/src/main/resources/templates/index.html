@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+<div class="wrapper">
+    <div class="form-wrapper sign-in">
+        <form action="">
+            <h2>Inicio de sesión</h2>
+            <div class="input-group">
+                <input type="text" required>
+                <label for="">Usuario</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required>
+                <label for="">contraseña</label>
+            </div>
+            <button onclick="location.href='Inicio.html'" type="submit">Iniciar</button>
+            <div class="signUp-link">
+                <p>¿no tienes una cuenta? <a href="#" class="signUpBtn-link">Registrarse</a></p>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-wrapper sign-up">
+        <form action="">
+            <h2>Registrarse</h2>
+            <div class="input-group">
+                <input type="text" required>
+                <label for="">Usuario</label>
+            </div>
+            <div class="input-group">
+                <input type="Correo" required>
+                <label for="">Correo</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required>
+                <label for="">Contraseña</label>
+            </div>
+
+            <button type="submit">registrar</button>
+            <div class="signUp-link">
+                <p>¿Ya tienes una cuenta? <a href="#" class="signInBtn-link">Iniciar sesión</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
