@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver producto</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product {
+            width: 50%;
+        }
+
+        .image {
+            width: 100%;
+        }
+
+        .details {
+            width: 50%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            display: flex;
+        }
+
+        .star {
+            color: gold;
+            font-size: 16px;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .discount {
+            font-size: 16px;
+            color: green;
+            margin-bottom: 10px;
+        }
+
+        .installments {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0069d9;
+        }
+
+        .cart-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-button:hover {
+            background-color: #218838;
+        }
+
+        .features {
+            margin-top: 20px;
+        }
+
+        .feature {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product">
+            <td><img th:src="${producto.imagen}" alt="Imagen del Producto" width="100" class="image"></td>
+        </div>
+        <div class="details">
+            <form th:action="@{/carrito}" method="POST">
+                <h1 th:text="${producto.nombre}">producto</h1>
+                <div class="price">
+                    <h5 th:text=" '$ '+ ${producto.precio} ">precio</h5>
+                </div>
+                <button type="submit" class="cart-button">Agregar al carrito</button>
+                <div class="features">
+                    <h2>Descripción:</h2>
+                    <div class="feature">
+                        <li th:text="${producto.descripcion} ">descripcion</li>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

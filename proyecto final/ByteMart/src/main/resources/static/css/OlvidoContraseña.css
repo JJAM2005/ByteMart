@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Nunito", sans-serif;
+}
+
+body {
+    background-color: #ccc;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    font-family: "Nunito", sans-serif;
+    background: linear-gradient(to right, #e2e2e2);
+    color: #333;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo {
+    float: left;
+    margin-right: 20px;
+}
+
+.logo img {
+    max-width: 60px;
+    height: auto;
+}
+
+.menu {
+    text-align: center;
+    position: absolute;
+    top: 23px;
+    left: 80px;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.container h2 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+.container p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.container label {
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+    color: #333;
+}
+
+.container input {
+    background-color: #fff;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+}
+
+.container input:focus {
+    background-color: #e6f7ff;
+    transform: scale(1.02); /* Añadir animación de escala */
+}
+
+.container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px; /* Añadir margen superior para separación */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.container button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Añadir animación de escala */
+}
+
+footer {
+    background: linear-gradient #c9d6ff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.siguenos {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+}
+
+.siguenos h4 {
+    margin: 0;
+    margin-right: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.siguenos .icon {
+    text-decoration: none;
+    margin: 0 5px;
+    font-size: 18px;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.siguenos .icon:hover {
+    color: #007bff;
+}

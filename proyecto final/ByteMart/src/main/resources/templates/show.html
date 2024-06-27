@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Buscar Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #009879;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #009879;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f3f3f3;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px;
+            background-color: #009879;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+        .btn-create {
+            background-color: #4CAF50; /* Green */
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Buscar Productos</h2>
+        <div class="search-box">
+            <a href="create" class="btn btn-create">Crear Producto</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="producto : ${productos}">
+                    <td th:text="${producto.id}">1</td>
+                    <td th:text="${producto.nombre}">Producto 1</td>
+                    <td th:text="${producto.descripcion}">Descripción del Producto 1</td>
+                    <td th:text="${producto.precio}">100.00</td>
+                    <td><img th:src="${producto.imagen}" alt="Imagen del Producto" width="100"></td>
+                    <td>
+                        <a th:href="@{'/edit/' + ${producto.id}}" class="btn">Editar</a>
+                        <a th:href="@{'/verproducto/' + ${producto.id}}" class="btn">ver</a>
+                        <form th:action="@{'/delete/' + ${producto.id}}" method="post" style="display:inline;">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn btn-delete">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

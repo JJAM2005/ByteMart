@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Product</title>
+</head>
+<body>
+    <h1>Create Product</h1>
+    <form th:action="@{/saveproducto}" method="post">
+        <input type="text" id="nombre" name="nombre" required placeholder="nombre">
+        <input type="text" id="descripcion" name="descripcion" required placeholder="descripcion">
+        <input type="text" id="imagen" name="imagen" required placeholder="imagen">
+        <input type="text" id="precio" name="precio" required placeholder="precio">
+        <input type="text" id="cantidad" name="cantidad" required placeholder="cantidad">
+
+        <button type="submit">Create Product</button>
+    </form>
+</body>
+</html>
