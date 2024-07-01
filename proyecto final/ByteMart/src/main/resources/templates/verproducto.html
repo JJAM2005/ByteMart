@@ -103,15 +103,21 @@
 </head>
 <body>
     <div class="container">
-        <div class="product">
-            <td><img th:src="${producto.imagen}" alt="Imagen del Producto" width="100" class="image"></td>
+        <div  class="product">
+            
+            <img th:src="@{/img/{img} (img=${producto.imagen}+.png)  }" alt="Imagen del Producto" width="100" class="image">
         </div>
         <div class="details">
-            <form th:action="@{/carrito}" method="POST">
+            <form th:action="@{/cart}" method="POST">
+                <input type="hidden" th:value="${producto.id}" name="id">
                 <h1 th:text="${producto.nombre}">producto</h1>
                 <div class="price">
                     <h5 th:text=" '$ '+ ${producto.precio} ">precio</h5>
                 </div>
+                <h6>
+                    Cantidad: <input type="number" id="cantidad" name="cantidad"
+                        autocomplete="off" min="1" max="5" value="1">
+                </h6>
                 <button type="submit" class="cart-button">Agregar al carrito</button>
                 <div class="features">
                     <h2>Descripción:</h2>

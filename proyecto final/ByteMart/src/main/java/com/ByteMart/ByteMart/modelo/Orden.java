@@ -1,6 +1,6 @@
 package com.ByteMart.ByteMart.modelo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ordenes")
+@Table(name = "Pedidos")
 public class Orden {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,4 +99,5 @@ public class Orden {
 	public void setDetalle(List<DetalleOrden> detalle) {
 		this.detalle = detalle;
     }
+	
 }

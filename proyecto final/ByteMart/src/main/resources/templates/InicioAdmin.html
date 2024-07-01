@@ -40,7 +40,7 @@
                     <i class="fas fa-user"></i>
                 </a>
                 <ul id="login-menu">
-                    <li id="profile-menu"><a href="show"><i class="fas fa-user-circle"></i> Perfil</a></li>
+                    <li id="profile-menu"><a href="pedidos"><i class="fas fa-user-circle"></i> Pedidos</a></li>
                     <li id="settings-menu"><a href="show"><i class="fas fa-cog"></i>producto</a></li>
                     <li id="login-menu-item"><a href="usuario"><i class="fas fa-sign-in-alt"></i>Usuario</a></li>
                     <li id="logout-menu"><a href="login"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
@@ -69,16 +69,23 @@
 <main>
     <section id="Computadores">
         <h2>Computadores</h2>
-        <form action="/catalogo" method="post" enctype="multipart/form-data">
-            <div class="producto">
-                <tr th:each="producto : ${productos}">
-                    <img th:src="${producto.imagen}" alt="Imagen del Producto" width="100">
-                    <td th:text="${producto.nombre}">Producto 1</td>
-                    <td th:text="${producto.precio}">100.00</td>
-                </td>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-        </form>
+        <div class="row text-center">
+
+			<div class="col-lg-3 col-md-6 mb-4" th:each="producto: ${productos}">
+				<div class="card h-100">
+					<img class="card-img-top"
+						th:src="@{/images/{img} (img=${producto.imagen})} " alt="">
+					<div class="card-body">
+						<p class="card-text" th:text="${producto.nombre}"></p>
+					</div>
+					<div class="card-footer">
+						<a th:href="@{/verproducto/{id}  (id=${producto.id})  }" class="btn btn-success">Ver
+							producto</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
         <div class="producto">
             <tr th:each="producto : ${productos}">
                 <img th:src="${producto.imagen}" alt="Imagen del Producto" width="100">

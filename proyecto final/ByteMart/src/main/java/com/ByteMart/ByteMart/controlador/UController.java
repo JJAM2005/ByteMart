@@ -6,7 +6,7 @@ import java.util.ArrayList;
 //import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-//import java.util.stream.Collectors;
+
 import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,8 @@ import com.ByteMart.ByteMart.modelo.Orden;
 
 import com.ByteMart.ByteMart.modelo.Producto;
 import com.ByteMart.ByteMart.modelo.Usuario;
-
+//import com.ByteMart.ByteMart.service.IDetalleOrdenService;
+import com.ByteMart.ByteMart.service.IOrdenService;
 import com.ByteMart.ByteMart.service.IUsuarioService;
 
 import com.ByteMart.ByteMart.service.ProductoService;
@@ -37,7 +38,6 @@ import ch.qos.logback.classic.Logger;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-//@RequestMapping("/usuario")
 public class UController {
 	
 	private final Logger logger= (Logger) LoggerFactory.getLogger(UController.class);
@@ -48,16 +48,14 @@ public class UController {
 	@Autowired
 	private ProductoService productoService;
 	
-	/*@Autowired
+	@Autowired
 	private IOrdenService ordensService;
 
-	@Autowired
-	private UploadFileService upload;
 	
 	@Autowired
 	private IOrdenService ordenService;
 	
-	@Autowired
+	/*@Autowired
 	private IDetalleOrdenService detalleOrdenService;*/
 
 	// para almacenar los detalles de la orden
@@ -146,6 +144,202 @@ public class UController {
 		return "redirect:/login";
 	}
 
+	@GetMapping("/compras")
+	public String obtenerCompras(Model model, HttpSession session) {
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+		
+		Usuario usuario= usuarioService.findById(  Integer.parseInt(session.getAttribute("idusuario").toString()) ).get();
+		List<Orden> ordenes= ordenService.findByUsuario(usuario);
+		logger.info("ordenes {}", ordenes);
+		
+		model.addAttribute("ordenes", ordenes);
+		
+		return "compras";
+	}
+	
+	@GetMapping("/detalle/{id}")
+	public String detalleCompra(@PathVariable Integer id, HttpSession session, Model model) {
+		logger.info("Id de la orden: {}", id);
+		Optional<Orden> orden=ordenService.findById(id);
+		
+		model.addAttribute("detalles", orden.get().getDetalle());
+		
+		
+		//session
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+		return "usuario/detallecompra";
+	}
+	
+	@GetMapping("/cerrar")
+	public String cerrarSesion( HttpSession session ) {
+		session.removeAttribute("idusuario");
+		return "redirect:/";
+	}
+	//adminitrador
+	
+	
+	
+	@GetMapping("/pedidos")
+	public String ordenes(Model model) {
+		model.addAttribute("ordenes", ordensService.findAll());
+		return "pedidos";
+	}
+	//no sirve
+	/*@GetMapping("/detalle/{id}")
+	public String detalle(Model model, @PathVariable Integer id) {
+		logger.info("Id de la orden {}",id);
+		Orden orden= ordensService.findById(id).get();
+		
+		model.addAttribute("detalles", orden.getDetalle());
+		
+		return "detallepedido";
+	}*/
+
+	//home
+	@GetMapping("")
+	public String home(Model model, HttpSession session) {
+		
+		logger.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
+		
+		model.addAttribute("productos", productoService.findAll());
+		
+		//session
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+		return "home";
+	}
+
+	@GetMapping("verproducto/{id}")
+	public String productoHome(@PathVariable Integer id, Model model) {
+		logger.info("Id producto enviado como parámetro {}", id);
+		Producto producto = new Producto();
+		Optional<Producto> productoOptional = productoService.get(id);
+		producto = productoOptional.get();
+
+		model.addAttribute("producto", producto);
+
+		return "verproducto";
+	}
+	
+
+	@PostMapping("/cart")
+	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad, Model model) {
+		DetalleOrden detalleOrden = new DetalleOrden();
+		Producto producto = new Producto();
+		double sumaTotal = 0;
+
+		Optional<Producto> optionalProducto = productoService.get(id);
+		logger.info("Producto añadido: {}", optionalProducto.get());
+		logger.info("Cantidad: {}", cantidad);
+		producto = optionalProducto.get();
+
+		detalleOrden.setCantidad(cantidad);
+		detalleOrden.setPrecio(producto.getPrecio());
+		detalleOrden.setNombre(producto.getNombre());
+		detalleOrden.setTotal(producto.getPrecio() * cantidad);
+		detalleOrden.setProducto(producto);
+		
+		//validar que le producto no se añada 2 veces
+		Integer idProducto=producto.getId();
+		boolean ingresado=detalles.stream().anyMatch(p -> p.getProducto().getId()==idProducto);
+		
+		if (!ingresado) {
+			detalles.add(detalleOrden);
+		}
+		
+		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
+
+		orden.setTotal(sumaTotal);
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+
+		return "carrito";
+	}
+
+
+	// quitar un producto del carrito
+	@GetMapping("/delete/cart/{id}")
+	public String deleteProductoCart(@PathVariable Integer id, Model model) {
+
+		// lista nueva de prodcutos
+		List<DetalleOrden> ordenesNueva = new ArrayList<DetalleOrden>();
+
+		for (DetalleOrden detalleOrden : detalles) {
+			if (detalleOrden.getProducto().getId() != id) {
+				ordenesNueva.add(detalleOrden);
+			}
+		}
+
+		// poner la nueva lista con los productos restantes
+		detalles = ordenesNueva;
+
+		double sumaTotal = 0;
+		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
+
+		orden.setTotal(sumaTotal);
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+
+		return "carrito";
+	}
+	
+	@GetMapping("/getCart")
+	public String getCart(Model model, HttpSession session) {
+		
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		
+		//sesion
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+		return "carrito";
+	}
+	
+	@GetMapping("/order")
+	public String order(Model model, HttpSession session) {
+		
+		Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+		
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		model.addAttribute("usuario", usuario);
+		
+		return "pedido";
+	}
+	
+	// guardar la orden no sirve
+	/*@GetMapping("/saveOrder")
+	public String saveOrder(HttpSession session ) {
+		Date fecha =new Date();
+		orden.setFechaCreacion(fecha);
+		orden.setNumero(ordenService.generarNumeroOrden());
+		
+		//usuario
+		Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())  ).get();
+		
+		orden.setUsuario(usuario);
+		ordenService.save(orden);
+		
+		//guardar detalles
+		for (DetalleOrden dt:detalles) {
+			dt.setOrden(orden);
+			detalleOrdenService.save(dt);
+		}
+		
+		///limpiar lista y orden
+		orden = new Orden();
+		detalles.clear();
+		
+		return "redirect:/";
+	}*/
+	
+	@PostMapping("/search")
+	public String searchProduct(@RequestParam String nombre, Model model) {
+		logger.info("Nombre del producto: {}", nombre);
+		List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
+		model.addAttribute("productos", productos);		
+		return "home";
+	}
+
 	//producto
 	@GetMapping("/show")
 	public String show(Model model) {
@@ -192,60 +386,8 @@ public class UController {
 		return "redirect:/show";
 	}
 
-	@GetMapping("verproducto/{id}")
-	public String productoHome(@PathVariable Integer id, Model model) {
-		logger.info("Id producto enviado como parámetro {}", id);
-		Producto producto = new Producto();
-		Optional<Producto> productoOptional = productoService.get(id);
-		producto = productoOptional.get();
-
-		model.addAttribute("producto", producto);
-
-		return "verproducto";
-	}
-	
-
-	@PostMapping("/carrito")
-	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad, Model model) {
-		DetalleOrden detalleOrden = new DetalleOrden();
-		Producto producto = new Producto();
-		double sumaTotal = 0;
-
-		Optional<Producto> optionalProducto = productoService.get(id);
-		logger.info("Producto añadido: {}", optionalProducto.get());
-		logger.info("Cantidad: {}", cantidad);
-		producto = optionalProducto.get();
-
-		detalleOrden.setCantidad(cantidad);
-		detalleOrden.setPrecio(producto.getPrecio());
-		detalleOrden.setNombre(producto.getNombre());
-		detalleOrden.setTotal(producto.getPrecio() * cantidad);
-		detalleOrden.setProducto(producto);
-		
-		//validar que le producto no se añada 2 veces
-		Integer idProducto=producto.getId();
-		boolean ingresado=detalles.stream().anyMatch(p -> p.getProducto().getId()==idProducto);
-		
-		if (!ingresado) {
-			detalles.add(detalleOrden);
-		}
-		
-		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
-
-		orden.setTotal(sumaTotal);
-		model.addAttribute("cart", detalles);
-		model.addAttribute("orden", orden);
-
-		return "carrito";
-	}
 	
 	
-	/*@PostMapping("/search")
-	public String searchProduct(@RequestParam String nombre, Model model) {
-		logger.info("Nombre del producto: {}", nombre);
-		List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
-		model.addAttribute("productos", productos);		
-		return "inicioadmin";
-	}*/
+
 
 }

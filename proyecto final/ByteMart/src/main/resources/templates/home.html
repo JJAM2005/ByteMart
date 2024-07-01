@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <style>
+       .producto {
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            width: 15%;
+            display: inline-block;
+            margin-right: 1%;
+        }
+
+       .producto img {
+            width: 100%;
+            max-width: 100px;
+            height: auto;
+        }
+
+       .producto h5 {
+            margin-top: 0.3rem;
+        }
+
+       .producto.precio {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+       .producto button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+       .producto button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/search}">
+        <input class="form-control mr-sm-2" type="search"
+            placeholder="Buscar" aria-label="Search" name="nombre"
+            autocomplete="off">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+    
+    <div class="row text-center">
+        <div class="producto" th:each="producto: ${productos}">
+            <img th:src="@{/img/{img} (img=${producto.imagen}+.png)  }" alt="Imagen del Producto" width="100">
+            <h5 th:text="${producto.nombre}"></h5>
+            <p class="precio" th:text=" '$ '+ ${producto.precio} "></p>
+            <a th:href="@{'/verproducto/' + ${producto.id}}" class="btn">ver</a>
+        </div>
+    </div>
+</body>
+</html>

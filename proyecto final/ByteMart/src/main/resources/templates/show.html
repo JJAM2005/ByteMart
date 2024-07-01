@@ -85,6 +85,7 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Precio</th>
+                    <th>Cantidad</th>
                     <th>Imagen</th>
                     <th>Acciones</th>
                 </tr>
@@ -95,14 +96,12 @@
                     <td th:text="${producto.nombre}">Producto 1</td>
                     <td th:text="${producto.descripcion}">Descripción del Producto 1</td>
                     <td th:text="${producto.precio}">100.00</td>
-                    <td><img th:src="${producto.imagen}" alt="Imagen del Producto" width="100"></td>
+                    <td th:text="${producto.cantidad}">1.00</td>
+                    <td><img th:src="@{/img/{img} (img=${producto.imagen}+.png)  }" alt="Imagen del Producto" width="100"></td>
                     <td>
                         <a th:href="@{'/edit/' + ${producto.id}}" class="btn">Editar</a>
                         <a th:href="@{'/verproducto/' + ${producto.id}}" class="btn">ver</a>
-                        <form th:action="@{'/delete/' + ${producto.id}}" method="post" style="display:inline;">
-                            <input type="hidden" name="_method" value="delete">
-                            <button type="submit" class="btn btn-delete">Eliminar</button>
-                        </form>
+                        <a th:href="@{'/delete/' + ${producto.id}}" class="btn btn-delete">Eliminar</a>
                     </td>
                 </tr>
             </tbody>
