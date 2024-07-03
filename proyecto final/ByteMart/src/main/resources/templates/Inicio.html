@@ -1,141 +1,63 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/inicio.css">
+    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="icon" href="../../static/img/Logo%20ByteMart.ico"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <title>e-Commerce - ByteMart</title>
+    <title>ByteMart</title>
 </head>
 <body>
-<header>
-    <div class="header-content">
-        <div class="logo">
-            <a href="#">
-                <img src="img/LOGO.png" height="100" width="100"/>
-            </a>
-        </div>
-        <div class="menu">
-            <h1>ByteMart</h1>
-        </div>
-    </div>
-    <div class="header-buttons">
-        <div class="carrito">
-            <div class="carrito-container">
-                <button class="carrito-button">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </button>
-                <ul id="carrito-menu">
-                    <!-- Los productos añadidos al carrito se mostrarán aquí -->
-                </ul>
-            </div>
-        </div>
-        <div class="login">
-            <div class="login-container">
-                <a href="#" class="button" id="login-button">
-                    <i class="fas fa-user"></i>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="#">
+                    <img src="img/LOGO.png" height="100" width="100"/>
                 </a>
-                <ul id="login-menu">
-                    <li id="logout-menu"><a href="login"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
-                </ul>
+            </div>
+            <div class="menu">
+                <h1>ByteMart</h1>
             </div>
         </div>
-    </div>
-    <div class="search-container">
-        <form action="/search" method="post">
-            <input type="text" id="buscar-producto" placeholder="Buscar productos">
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </form>
-    </div>
-    <nav class="navbar">
-        <ul>
-            <li><a href="#Computadores">Computadores</a></li>
-            <li><a href="#Impresoras">Impresoras</a></li>
-            <li><a href="#Accesorios">Accesorios</a></li>
-            <li><a href="#Tables y celulares">Tablets y celulares</a></li>
-            <li><a href="#Audio">Audio</a></li>
-            <li><a href="#Videojuegos">Videojuegos</a></li>
-            <li><a href="#Ofertas">Ofertas</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    <section id="Computadores">
-        <h2>Computadores</h2>
-        <form action="/catalogo" method="post" enctype="multipart/form-data">
-            <div class="producto">
-                <tr th:each="producto : ${productos}">
-                    <img th:src="${producto.imagen}" alt="Imagen del Producto" width="100">
-                    <td th:text="${producto.nombre}">Producto 1</td>
-                    <td th:text="${producto.precio}">100.00</td>
-                </td>
-                <button class="add-to-cart">Agregar al carrito</button>
+        <div class="header-buttons">
+            <div class="login">
+                <div class="login-container">
+                    <a href="#" class="button" id="login-button">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <ul id="login-menu">
+                        <li id="profile-menu"><a href="perfil"><i class="fas fa-user-circle"></i> Perfil</a></li>
+                        <li id="profile-menu"><a th:href="@{/getCart}"><i class="fa-solid fa-cart-plus"></i> Carrito</a></li>
+                        <li id="logout-menu"><a th:href="@{/}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+                    </ul>
+                </div>
             </div>
-        </form>
-        <div class="producto">
-            <tr th:each="producto : ${productos}">
-                <img th:src="${producto.imagen}" alt="Imagen del Producto" width="100">
-                <td th:text="${producto.nombre}">Producto 1</td>
-                <td th:text="${producto.precio}">100.00</td>
-            </td>
-            <button class="add-to-cart">Agregar al carrito</button>
         </div>
-        <div class="producto">
-            <img src="../../static/img/Ram%20corsair.webp" height="700" width="700"/>
-            <h5>Memoria Ram Kingston Fury Beast Ddr4 32 Gb 3000</h5>
-            <p class="precio">$699.999 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
+        <div class="search-container">
+            <form method="post" th:action="@{/search1}">
+                <input class="form-control mr-sm-2" type="text"
+                    placeholder="Buscar" aria-label="Search" name="nombre"
+                    autocomplete="off">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            
         </div>
-        <div class="producto">
-            <img src="../../static/img/monitor%20samsung.webp" height="700" width="500"/>
-            <h5>Monitor Led De "24" Color Black 100V/240V</h5>
-            <p class="precio">$510.726 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
+        
+    </header>
+
+    
+    <div class="row text-center">
+        <div class="producto" th:each="producto: ${productos}">
+            <img th:src="@{/img/{img} (img=${producto.imagen}+.png)  }" alt="Imagen del Producto" width="100">
+            <h5 th:text="${producto.nombre}"></h5>
+            <p class="precio" th:text=" '$ '+ ${producto.precio} "></p>
+            <a th:href="@{'/verproducto/' + ${producto.id}}" class="btn">ver</a>
         </div>
-        <div class="producto">
-            <img src="../../static/img/camara.webp" height="1000" width="1000"/>
-            <h5>Cámara GoPro Hero11 5.3K negra</h5>
-            <p class="precio">$1.529.000 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-        <div class="producto">
-            <img src="../../static/img/Xbox%20series%20X.webp" height="1049" width="1130"/>
-            <h5>Consola Microsoft Xbox Series X Standard 1tb Color Negro</h5>
-            <p class="precio">$2.076.246 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-        <div class="producto">
-            <img src="../../static/img/targeta%20grafica.webp" height="1029" width="1200"/>
-            <h5>Gpu Gamer Rx6600 Gddr6 8gb Amd Radeon</h5>
-            <p class="precio">$1.033.404 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-        <div class="producto">
-            <img src="../../static/img/mause.webp" height="792" width="880"/>
-            <h5>Logitech G502 Hero, Mouse Gamer Rgb </h5>
-            <p class="precio">$167.000 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-        <div class="producto">
-            <img src="../../static/img/Mandops4.webp" height="691" width="1002"/>
-            <h5>Control Inalámbrico Ps5 Dualsense Color Blanco</h5>
-            <p class="precio">$293.771 COP</p>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-    </section>
-    <section id="Impresoras">
-        <h2>Impresoras</h2>
-    </section>
-    <section id="Accesorios">
-        <h2>Accesorios</h2>
-    </section>
-    <section id="Tables y celulares">
-        <h2>Tables y celulares</h2>
-    </section>
+    </div>
     <div class="contacts">
         <div class="icons">
             <a href=""><i class="fa-brands fa-facebook"></i></a>
@@ -143,10 +65,9 @@
             <a href=""><i class="fa-brands fa-whatsapp"></i></a>
         </div>
     </div>
-</main>
-<footer>
-    <p>&copy; 2024 ByteMart. Todos los derechos reservados.</p>
-</footer>
-<script src="js/inicio.js"></script>
+    <footer>
+        <p>&copy; 2024 ByteMart. Todos los derechos reservados.</p>
+    </footer>
+    <script src="js/inicio.js"></script>
 </body>
 </html>

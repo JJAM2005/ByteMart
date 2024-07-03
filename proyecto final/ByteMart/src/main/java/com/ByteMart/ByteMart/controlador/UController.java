@@ -65,10 +65,6 @@ public class UController {
 	Orden orden = new Orden();
 	
 	//BCryptPasswordEncoder passEncode= new BCryptPasswordEncoder();
-	@GetMapping("/inicio")
-	public String inicio() {
-		return "inicio";
-	}
 	@GetMapping("/create")
 	public String create() {
 		return "create";
@@ -97,9 +93,12 @@ public class UController {
         model.addAttribute("usuarios", usuarios);
         return "usuario";
 	}
-	@GetMapping("/inicioadmin")
-	public String inicioadmin() {
-		return "inicioadmin";
+
+	@GetMapping("/usuarios")
+	public String getUsuario(Model model) {
+        List<Usuario> usuarios = usuarioService.getAllUsuarios();
+        model.addAttribute("usuarios", usuarios);
+        return "usuarios";
 	}
 
 	@GetMapping ("/sesiones")
@@ -132,10 +131,12 @@ public class UController {
 		if (user.isPresent()) {
 			session.setAttribute("idusuario", user.get().getId());
 			
-			if (user.get().getRol().equals("Admin")) {
-				return "redirect:/inicioadmin";
+			if (user.get().getRol().equals("SuperAdmin")) {
+				return "redirect:/homeSuperAdmin";
+			}if (user.get().getRol().equals("Admin")) {
+				return "redirect:/homeadmin";
 			}else {
-				return "redirect:/inicio";
+				return "redirect:/homeUser";
 			}
 		}else {
 			logger.info("Usuario no existe");
@@ -207,6 +208,42 @@ public class UController {
 		model.addAttribute("sesion", session.getAttribute("idusuario"));
 
 		return "home";
+	}
+	@GetMapping("/homeadmin")
+	public String homeadmin(Model model, HttpSession session) {
+		
+		logger.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
+		
+		model.addAttribute("productos", productoService.findAll());
+		
+		//session
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+		return "inicioadmin";
+	}
+	@GetMapping("/homeUser")
+	public String homeUser(Model model, HttpSession session) {
+		
+		logger.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
+		
+		model.addAttribute("productos", productoService.findAll());
+		
+		//session
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+		return "inicio";
+	}
+	@GetMapping("/homeSuperAdmin")
+	public String homesuperadmin(Model model, HttpSession session) {
+		
+		logger.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
+		
+		model.addAttribute("productos", productoService.findAll());
+		
+		//session
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+		return "iniciosuperadmin";
 	}
 
 	@GetMapping("verproducto/{id}")
@@ -339,6 +376,13 @@ public class UController {
 		model.addAttribute("productos", productos);		
 		return "home";
 	}
+	@PostMapping("/search1")
+	public String searchProducto(@RequestParam String nombre, Model model) {
+		logger.info("Nombre del producto: {}", nombre);
+		List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
+		model.addAttribute("productos", productos);		
+		return "inicio";
+	}
 
 	//producto
 	@GetMapping("/show")
@@ -385,9 +429,42 @@ public class UController {
 		productoService.delete(id);
 		return "redirect:/show";
 	}
+	//editar usuario
+	@GetMapping("/editUser/{id}")
+	public String editUser(@PathVariable Integer id, Model model) {
+    Usuario usuario = new Usuario();
+    Optional<Usuario> optionalUsuario = usuarioService.get(id);
+    usuario = optionalUsuario.get();
+	logger.info("Usuario buscado: {}", usuario);
+	model.addAttribute("usuario", usuario);
+	return "editUser"; 
+	}
+	@PostMapping("/updateUser")
+	public String updateUser(Usuario usuario) {
+		Usuario u = new Usuario();
+		u = usuarioService.get(usuario.getId()).get();
+		usuario.setRol(u.getRol());
+		usuarioService.update(usuario);		
+		return "redirect:/usuarios"; 
+	}
+	@GetMapping("/deleteUser/{id}")
+	public String deleteUser(@PathVariable Integer id) {
+		usuarioService.delete(id);
+		return "redirect:/usuarios";
+	}
+	@GetMapping("/perfil/{id}")
+	public String usuarioHome(@PathVariable Integer id, Model model) {
+		logger.info("Id usuario enviado como parámetro {}", id);
+		Usuario usuario = new Usuario();
+		Optional<Usuario> usuarioOptional = usuarioService.get(id);
+		usuario = usuarioOptional.get();
+		model.addAttribute("usuario", usuario);
+		return "perfil"; 
 
-	
-	
-
+	}
 
 }
+
+	
+
+

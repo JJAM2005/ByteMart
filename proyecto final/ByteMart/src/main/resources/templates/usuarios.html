@@ -9,9 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet">
     <title>ByteMart</title>
-    <style>
-        /* Basic reset to ensure consistent styling across browsers */
-* {
+<style>
+    * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -21,8 +20,6 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
     color: #333;
-    margin: 0;
-    padding: 0;
 }
 header {
     font-family: "Nunito", sans-serif;
@@ -338,9 +335,8 @@ footer {
     color: #000;
     opacity: 0.9;
 }
-
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background-color: #ffffff;
@@ -349,49 +345,79 @@ footer {
 }
 
 h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
     text-align: center;
+}
+
+.search-box {
+    display: flex;
+    justify-content: flex-end;
     margin-bottom: 20px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-form label {
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-form input[type="text"],
-form input[type="number"],
-form textarea {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-form textarea {
-    resize: vertical;
-}
-
-form button[type="submit"] {
-    align-self: flex-start;
+.search-box .btn-create {
     padding: 10px 20px;
-    background-color: #007bff;
     color: #fff;
-    border: none;
+    background-color: #28a745;
+    text-decoration: none;
     border-radius: 5px;
-    cursor: pointer;
     transition: background-color 0.3s;
 }
 
-form button[type="submit"]:hover {
+.search-box .btn-create:hover {
+    background-color: #218838;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table th {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+table img {
+    border-radius: 5px;
+}
+
+table .btn {
+    padding: 5px 10px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+}
+
+table .btn:hover {
     background-color: #0056b3;
 }
-    </style>
+
+table .btn-delete {
+    background-color: #dc3545;
+}
+
+table .btn-delete:hover {
+    background-color: #c82333;
+}
+
+</style>
 </head>
 <body>
     <header>
@@ -424,40 +450,54 @@ form button[type="submit"]:hover {
                 </div>
             </div>
         </div>
+        <div class="search-container">
+            <form method="post" th:action="@{/search}">
+                <input class="form-control mr-sm-2" type="text"
+                    placeholder="Buscar" aria-label="Search" name="nombre"
+                    autocomplete="off">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            
+        </div>
         
     </header>
-    <div class="container">
-        <h2>Editar Producto</h2>
-        <form action="/update" method="post" enctype="multipart/form-data">
-            <input type="hidden" id="id" name="id" th:value="${producto.id}">
-            
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" th:value="${producto.nombre}" required>
-            
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4" th:text="${producto.descripcion}" required></textarea>
-            
-            <label for="precio">Precio:</label>
-            <input type="number" id="precio" name="precio" step="0.01" th:value="${producto.precio}" required>
-            
-            <label for="imagen">Imagen:</label>
-            <input type="text" id="imagen" name="imagen" th:value="${producto.imagen}"required>
-            
-            <label for="cantidad">Cantidad:</label>
-            <input type="text" id="cantidad" name="cantidad" th:value="${producto.cantidad}" required>
-            
-            <button type="submit" class="btn">Actualizar Producto</button>
-        </form>
+<h2>Registro de Usuarios</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Registro No.</th>
+      <th>Nombres</th>
+      <th>Rol</th>
+      <th>Correo</th>
+      <th>Dirección</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody th:each="usuario : ${usuarios}">
+    <tr>
+        <td th:text="${usuario.id}">ID</td>
+        <td th:text="${usuario.nombre}">Nombres</td>
+        <td th:text="${usuario.rol}">rol</td>
+        <td th:text="${usuario.email}">Correo</td>
+        <td th:text="${usuario.direccion}">Dirección</td>
+        <td>
+            <a th:href="@{'/editUser/' + ${usuario.id}}" class="btn">Editar</a>
+            <a th:href="@{'/deleteUser/' + ${usuario.id}}" class="btn btn-delete">Eliminar</a>
+        </td>
+    </tr>
+</tbody>
+
+</table>
+<div class="contacts">
+    <div class="icons">
+        <a href=""><i class="fa-brands fa-facebook"></i></a>
+        <a href=""><i class="fa-brands fa-instagram"></i></a>
+        <a href=""><i class="fa-brands fa-whatsapp"></i></a>
     </div>
-    <div class="contacts">
-        <div class="icons">
-            <a href=""><i class="fa-brands fa-facebook"></i></a>
-            <a href=""><i class="fa-brands fa-instagram"></i></a>
-            <a href=""><i class="fa-brands fa-whatsapp"></i></a>
-        </div>
-    </div>
-    <footer>
-        <p>&copy; 2024 ByteMart. Todos los derechos reservados.</p>
-    </footer>
+</div>
+<footer>
+    <p>&copy; 2024 ByteMart. Todos los derechos reservados.</p>
+</footer>
 </body>
 </html>

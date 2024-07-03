@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 60%;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #009879;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Editar Usuario</h2>
+        <form action="/updateUser" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="id" name="id" th:value="${usuario.id}">
+            
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" required>
+            
+            <label for="cantidad">Correo:</label>
+            <input type="text" id="email" name="email" th:value="${usuario.email}" required>
+            
+            <label for="cantidad">Direccion:</label>
+            <input type="text" id="direccion" name="direccion" th:value="${usuario.direccion}" required>
+
+            <label for="cantidad">Rol:</label>
+            <input type="text" id="rol" name="rol" th:value="${usuario.rol}" required>
+
+            <button type="submit" class="btn">Actualizar Usuario</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -24,11 +24,21 @@
             </div>
         </div>
         <div class="header-buttons">
+            <div class="carrito">
+            </div>
             <div class="login">
                 <div class="login-container">
-                    <a href="login" class="button" id="login-button">
-                        <i class="fas fa-sign-out-alt"></i>Login
+                    <a href="#" class="button" id="login-button">
+                        <i class="fas fa-user"></i>
                     </a>
+                    <ul id="login-menu">
+                        <li id="profile-menu"><a href="perfil"><i class="fas fa-user-circle"></i> Perfil</a></li>
+                        <li id="profile-menu"><a href="pedidos"><i class="fas fa-user-circle"></i> Pedidos</a></li>
+                        <li id="settings-menu"><a href="show"><i class="fas fa-cog"></i>producto</a></li>
+                        <li id="login-menu-item"><a href="usuarios"><i class="fas fa-sign-in-alt"></i>Usuario</a></li>
+                        <li id="profile-menu"><a th:href="@{/getCart}"><i class="fa-solid fa-cart-plus"></i> Carrito</a></li>
+                        <li id="logout-menu"><a th:href="@{/}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

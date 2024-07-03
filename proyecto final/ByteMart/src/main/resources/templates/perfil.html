@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil de Usuario</title>
+</head>
+<body>
+    <header>
+        <h1>Perfil de Usuario</h1>
+    </header>
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-card">
+                <input type="hidden" th:value="${usuario.id}" name="id">
+                <h2 th:text="${usuario.nombre}">Nombre del Usuario</h2>
+                <p><strong>ID:</strong> <span th:text="${usuario.id}">ID del Usuario</span></p>
+                <p><strong>Correo Electrónico:</strong> <span th:text="${usuario.correo}">Correo del Usuario</span></p>
+                <!-- Agrega más campos según sea necesario -->
+            </div>
+        </div>
+    </main>
+</body>
+</html>
